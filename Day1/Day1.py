@@ -3,7 +3,7 @@ list2 = []
 
 
 def main():
-    parse_input('./input.txt')
+    parse_input('input.txt')
 
 
 def parse_input(input_file):
