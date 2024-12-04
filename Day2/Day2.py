@@ -1,39 +1,16 @@
-def main():
-    reports = 0
-    with open('input2.txt') as f:
-        for line in f:
-            if line:
-                values = line.strip().split()
-                print('values: ', values)
-                verified = verify_list(values)
-                if verified: reports += 1
+def check_line(line):
+    inc = [line[i + 1] - line[i] for i in range(len(line) - 1)]
 
-                print(f"The total right reports are : {reports}")
+    if set(inc) <= {1, 2, 3} or set(inc) <= {-1, -2, -3}:
+        return True
+    return False
 
 
-def verify_list(values):
-    variation = None
-    if len(values) < 2:
-        return False
+data = [[int(y) for y in x.split(' ')] for x in open('input2.txt').read().split('\n')]
 
-    for i in range(1, len(values)):
-        gap = abs(int(values[i]) - int(values[i - 1]))
-        print(f'This is ce gap between {values[i]} et {values[i - 1]} : {gap}')
+safe_count = sum([check_line(line) for line in data])
+print(safe_count)
 
-        if gap < 1 or gap > 3: return False
-        if int(values[i]) > int(values[i - 1]):
-            if variation is None:
-                variation = True
-                print('est ce que ca monte ? ', variation)
-            elif variation is False:
-                return False
-        elif int(values[i]) < int(values[i - 1]):
-            if variation is None:
-                variation = False
-                print('est ce que ca descend ? ', variation)
-            elif variation is True:
-                return False
-    return True
+safe_count = sum([any([check_line(line[:i] + line[i + 1:]) for i in range(len(line))]) for line in data])
+print(safe_count)
 
-
-main()
